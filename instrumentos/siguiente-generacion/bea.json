@@ -1,0 +1,9 @@
+{
+  "series": "US real GDP growth, 2024Q1, annualized percent",
+  "releases": [
+    {"available": "2024-04-25T12:30:00Z", "tenths": 16, "source": "https://www.bea.gov/news/2024/gross-domestic-product-first-quarter-2024-advance-estimate"},
+    {"available": "2024-05-30T12:30:00Z", "tenths": 13, "source": "https://www.bea.gov/news/2024/gross-domestic-product-first-quarter-2024-second-estimate-and-corporate-profits"},
+    {"available": "2024-06-27T12:30:00Z", "tenths": 14, "source": "https://www.bea.gov/news/2024/gross-domestic-product-third-estimate-corporate-profits-revised-estimate-and-gdp-industry"},
+    {"available": "2024-09-26T12:30:00Z", "tenths": 16, "source": "https://www.bea.gov/news/2024/gross-domestic-product-third-estimate-corporate-profits-revised-estimate-and-gdp-0"}
+  ]
+}
