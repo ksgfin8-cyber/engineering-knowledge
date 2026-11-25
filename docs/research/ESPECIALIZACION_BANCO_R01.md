@@ -19,3 +19,25 @@
 | Dos confirmaciones, A → B | 1, abstenerse | 2, actuar |
 
 **Controles, aceptación y cierre.** La salida final limpia A → B debe ser actuar en ambas alternativas. El criterio discriminativo exige cotejar memoria y decisión en los cinco pasos por alternativa. A debe coincidir en todos. B debe divergir exactamente en el segundo paso de la retransmisión con 2 y actuar, aunque la admisión de esa entrega se haya descartado. Si ambas pasan el criterio discriminativo, revisar la prueba antes de concluir y preservar la corrida inicial y el cambio. Presupuesto: una propiedad, dos alternativas y tres secuencias; sin aleatoriedad ni persistencia. Cerrar después de registrar la primera divergencia, la comparación limpia y el esfuerzo de adaptación. No inferir productividad ni efectos en producción.
+
+## Ejecución y dictamen
+
+**Deducido.** Contar identidades admitidas conserva el estado al repetir A. La mutación al recibir aumenta el contador aunque se rechace la entrega, por lo que cruza el umbral en A → A.
+
+**Observado.** Con Python 3.12.14, ambas alternativas terminaron A → B en «actuar». En A → A el segundo paso quedó marcado como descartado en ambas. A conservó 1 y «abstenerse». B reportó 2 y «actuar». [Traza inicial y divergencia](banco-r01/resultado.jsonl)
+
+**Verificado.** A coincidió con los cinco pasos del oráculo. B coincidió en cuatro y divergió exactamente en el segundo paso de A → A con el estado y la decisión previstos. El arnés exige esa divergencia para que el control negativo sea válido. La prueba de salida final limpia aprobó ambas opciones. La segunda corrida reprodujo la primera byte por byte. Se mantuvieron el diseño y el oráculo registrados antes de programar.
+
+**Decisión.** Adoptar la transición al admitir. La ficha permitió elegir la frontera de mutación antes de construir el componente. Del antecedente LAB2 se transfirió la obligación de observar la memoria después de un descarte y el orden de operaciones que sirve para inyectar el defecto. La identidad de confirmación, el contador y el umbral pertenecen al consumidor nuevo.
+
+**Esfuerzo y aporte del oráculo.** Se adaptaron el dominio y la identidad de una ficha, se derivaron manualmente cinco pares estado/decisión repartidos en tres secuencias y se implementó un arnés sin dependencias externas. Se reutilizaron el formato y el patrón del contraejemplo, con cero cambios al plano o a LAB2 y cero iteraciones de reparación de la prueba. El oráculo fijó el paso donde debía conservarse el estado, el valor residual y la decisión esperada. La prueba limpia de salida final dejó la elección abierta. El esfuerzo se registra por artefactos y casos. La productividad, la integración y la transferencia a otro consumidor requieren una comparación de trabajo más amplia.
+
+### Reproducción desde la raíz
+
+```sh
+set -eu
+salida=$(mktemp)
+trap 'rm -f -- "$salida"' EXIT
+python3 -B docs/research/banco-r01/probar.py > "$salida"
+cmp docs/research/banco-r01/resultado.jsonl "$salida"
+```
