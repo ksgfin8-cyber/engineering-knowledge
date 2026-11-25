@@ -1,0 +1,4 @@
+{"delivery":"D1","source":"local","entity":"serie","revision":1,"occurred":"2026-01-02T09:00:00Z","published":"2026-01-02T09:10:00Z","received":"2026-01-02T09:11:00Z","admitted":"2026-01-02T09:11:00Z","authority":"productor-local","value":10}
+{"delivery":"D2","source":"local","entity":"serie","revision":2,"occurred":"2026-01-02T09:00:00Z","published":"2026-01-02T11:50:00Z","received":"2026-01-02T12:10:00Z","admitted":"2026-01-02T12:10:00Z","authority":"productor-local","value":14}
+{"delivery":"D3","source":"local","entity":"serie","revision":2,"occurred":"2026-01-02T09:00:00Z","published":"2026-01-02T11:50:00Z","received":"2026-01-03T13:00:00Z","admitted":"2026-01-03T13:00:00Z","authority":"productor-local","value":14}
+{"delivery":"D4","source":"local","entity":"serie","revision":3,"occurred":"2026-01-02T09:00:00Z","published":"2026-01-04T12:05:00Z","received":"2026-01-04T12:06:00Z","admitted":"2026-01-04T12:06:00Z","authority":"productor-local","value":99}
