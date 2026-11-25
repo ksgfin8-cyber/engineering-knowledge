@@ -28,3 +28,36 @@
 | Perturbación | Consulta del 04 12:06 | 3, D4 | 99 | 10 |
 
 **Comparación y cierre.** Los dos motores reciben los mismos bytes en el mismo orden. El archivo crece por anexado y cada decisión fija la longitud del prefijo de entregas. Se reabre cada almacén para reconstruir la decisión y verificar su insumo y resultado. El comparador negativo usa la revisión mayor del archivo ignorando el corte y debe dar 14 para H tras D2. Aceptar si ambos motores coinciden en todas las filas y el negativo falla en H; conservar toda discrepancia. Medir por separado acciones del operador y operaciones lógicas de persistencia/lectura, sin usar la latencia de una sola corrida como coste recurrente. Cerrar tras un consumidor, una fuente y esos tres casos. Alcance local, sin evaluar ventaja predictiva ni escala.
+
+## Resultado y decisión
+
+**Deducido antes de la corrida.** El conocimiento cambia entre H y la retrospectiva. La publicación anticipada de D2 no la hace elegible en H. La perturbación D4 debe ser visible a partir de su admisión para que la prueba de invariancia en P sea sensible.
+
+**Observado.** Python 3.12.14 y SQLite 3.53.1 leyeron la secuencia local versionada. Ambos almacenes devolvieron `admitted, admitted, duplicate, admitted`. El archivo conservó los bytes por anexado y SQLite por entrega. Se reabrieron los almacenes para reconstruir H y P. El comparador sin corte obtuvo D2 y 14 en H, una divergencia de +4 puntos respecto al oráculo. [Salida inicial](temporal-r01/resultado.jsonl) · [Sobres brutos](temporal-r01/entregas.jsonl)
+
+**Verificado.** Las nueve comprobaciones de resultado de cada motor coincidieron con el oráculo, incluidos identidad del insumo y pronóstico. H conservó D1 y 10, mientras que la retrospectiva incorporó D2 y 14. P conservó D2 y 14 incluso al recalcular su corte con D4 ya cargada. A las 12:06 del día 4 se recuperó D4 y 99. Se comprobó igualdad de bytes de las cuatro entregas en ambos almacenes. El control negativo falló como estaba previsto. El protocolo y los diseños se mantuvieron tras observar la salida.
+
+### Trabajo por operación
+
+El arnés recorrió ambos almacenes en una invocación, sin ediciones manuales de datos, reglas o esquema. Por operación se contó una llamada explícita del arnés por alternativa y cero intervenciones adicionales. Los recuentos de persistencia describen las rutas ejecutadas y excluyen la apertura del almacén, sus comprobaciones de arranque y la configuración inicial.
+
+| Operación | Archivo versionado | SQLite KS-009 |
+| --- | --- | --- |
+| Incorporar D2 | Una lectura del historial para clasificar y un anexado de los bytes. Se añade una línea. | Dos consultas de identidad y tres escrituras (entrega, versión, vínculo) en una transacción. |
+| Reconstruir H | Dos lecturas (punto de control y prefijo del historial), una comprobación SHA-256 y un recorrido del prefijo para recalcular. | Tres consultas (decisión, selección por corte y frontera, referencias de insumos), cotejo de referencias y recálculo. |
+| Cambios para D2 | Cero cambios de código o formato. | Cero cambios de código o esquema. |
+| Dependencias operativas | Python, sistema de archivos, un escritor, conservar historial y puntos de control juntos. La fixture se versiona en Git. Si se usa Git para respaldar lotes de operación, hay que incluir también los puntos de control. Ese paso no se cronometró. | Python con SQLite, archivo de base, transacciones y respaldo consistente. El núcleo encapsula admisión y trazabilidad. |
+
+**Arquitectura inicial.** Usar archivo append-only y script para este primer consumidor con escritor único. Ambos mecanismos cubren el trabajo comprobado. El archivo requiere menos escrituras lógicas para D2 y menos piezas de persistencia. El coste total y la latencia recurrente quedan sin medir. Adoptar KS-009 cuando sea requisito confirmar atómicamente entregas, versiones y referencias de decisión con recuperación verificable ante interrupciones, o cuando la auditoría inversa de muchas decisiones requiera consultas indexadas. Esas necesidades exceden el caso probado.
+
+**Pendientes.** Observar recepción real de una fuente identificada, medir trabajo de captura, verificación, respaldo, recuperación y mantenimiento con lotes recurrentes, y repetir el contraste si aparecen escritores concurrentes. Ventaja predictiva y escala requieren ensayos propios. El archivo de referencia presupone sobres válidos y escritura secuencial, y el ensayo no probó fallos de escritura, correcciones conflictivas ni tiempos de servicio.
+
+### Reproducción desde la raíz
+
+```sh
+set -eu
+salida=$(mktemp)
+trap 'rm -f -- "$salida"' EXIT
+python3 -B docs/research/temporal-r01/probar.py > "$salida"
+cmp docs/research/temporal-r01/resultado.jsonl "$salida"
+```
