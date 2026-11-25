@@ -1,0 +1,8 @@
+{"diseno": "A/al_admitir", "caso": "una", "traza": [{"evento": "A", "admitido": true, "memoria": 1, "decision": "abstenerse"}]}
+{"diseno": "A/al_admitir", "caso": "retransmision", "traza": [{"evento": "A", "admitido": true, "memoria": 1, "decision": "abstenerse"}, {"evento": "A", "admitido": false, "memoria": 1, "decision": "abstenerse"}]}
+{"diseno": "A/al_admitir", "caso": "limpia", "traza": [{"evento": "A", "admitido": true, "memoria": 1, "decision": "abstenerse"}, {"evento": "B", "admitido": true, "memoria": 2, "decision": "actuar"}]}
+{"diseno": "A/al_admitir", "divergencias": [], "salida_final_limpia": "actuar"}
+{"diseno": "B/al_recibir", "caso": "una", "traza": [{"evento": "A", "admitido": true, "memoria": 1, "decision": "abstenerse"}]}
+{"diseno": "B/al_recibir", "caso": "retransmision", "traza": [{"evento": "A", "admitido": true, "memoria": 1, "decision": "abstenerse"}, {"evento": "A", "admitido": false, "memoria": 2, "decision": "actuar"}]}
+{"diseno": "B/al_recibir", "caso": "limpia", "traza": [{"evento": "A", "admitido": true, "memoria": 1, "decision": "abstenerse"}, {"evento": "B", "admitido": true, "memoria": 2, "decision": "actuar"}]}
+{"diseno": "B/al_recibir", "divergencias": [{"caso": "retransmision", "paso": 2, "esperado": [1, "abstenerse"], "observado": [2, "actuar"], "admitido": false}], "salida_final_limpia": "actuar"}
